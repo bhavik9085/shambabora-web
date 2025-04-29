@@ -35,20 +35,15 @@ const buttonVariants = cva(
   }
 )
 
-interface ButtonPropsBase
+interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+  loading?: boolean;
+  leftSection?: React.ReactNode;
+  rightSection?: React.ReactNode;
+}
 
-type ButtonProps = ButtonPropsBase &
-  (
-    | { asChild: true }
-    | {
-        asChild?: false
-        loading?: boolean
-        leftSection?: JSX.Element
-        rightSection?: JSX.Element
-      }
-  )
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, children, ...props }, ref) => {
