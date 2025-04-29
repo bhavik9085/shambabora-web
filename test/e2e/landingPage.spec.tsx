@@ -1,7 +1,7 @@
 
 import { test, expect } from '@playwright/test';
 
-test('homepage has welcome text', async ({ page }) => {
-  await page.goto('http://localhost:5173');
+test('The default landing page contains the following data', async ({ page }) => {
+  await page.goto('/');
   await expect(page.locator('text=Login')).toBeVisible();
 });
