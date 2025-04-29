@@ -12,6 +12,8 @@ interface DataTableColumnsProps {
   handleView: (rowData: any) => void
 }
 
+type CheckedState = boolean | "indeterminate";
+
 export const columns = <TData extends DataSchema>({
   handleEdit,
   handleDelete,
@@ -23,7 +25,7 @@ export const columns = <TData extends DataSchema>({
       <Checkbox
         checked={
           table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
+          (table.getIsSomePageRowsSelected() && 'indeterminate') as CheckedState
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label='Select all'

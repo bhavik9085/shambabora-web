@@ -8,6 +8,8 @@ import { DataTableRowActions } from './data-table-row-actions'
 import { labels, priorities, statuses } from '../data/data'
 import { Task } from '../data/schema'
 
+type CheckedState = boolean | "indeterminate";
+
 export const columns: ColumnDef<Task>[] = [
   {
     id: 'select',
@@ -15,7 +17,7 @@ export const columns: ColumnDef<Task>[] = [
       <Checkbox
         checked={
           table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
+          (table.getIsSomePageRowsSelected() && 'indeterminate') as CheckedState
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label='Select all'
