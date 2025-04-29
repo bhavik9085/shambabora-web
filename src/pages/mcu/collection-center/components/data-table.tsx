@@ -36,6 +36,8 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
+type CheckedState = boolean | "indeterminate";
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -89,7 +91,7 @@ export function DataTable<TData, TValue>({
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
+            (table.getIsSomePageRowsSelected() && 'indeterminate') as CheckedState
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label='Select all'

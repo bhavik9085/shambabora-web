@@ -127,7 +127,8 @@ export function DataTable<TData, TValue>({
       },
       //@ts-ignore
       {
-        accessorFn: row => `${row?.firstName} ${row?.middleName ?? ''} ${row?.lastName ?? ''}`,
+        //accessorFn: row => `${row?.firstName} ${row?.middleName ?? ''} ${row?.lastName ?? ''}`,
+        accessorFn: row => `Juma Alex makumuli`,
         id: 'fullName',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
         cell: ({ row }) => <span>{row.getValue('fullName')}</span>,
