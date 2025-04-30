@@ -5,35 +5,35 @@ test("sign page when login is clicked", async ({ page }) => {
 
   await expect(page.locator("text=Login")).toBeVisible();
 
-  //
+  //  Need to double click here to get the new page
   await page.getByRole("link", { name: /login/i }).click();
   await page.getByRole("link", { name: /login/i }).click();
 
   await expect(page).toHaveURL(/.*\/sign-in.*/);
-  await expect(page).toHaveURL(/\/sign/i);
+  await expect(page).toHaveURL(/.*\/sign-in.*/);
 
-  await page.getByLabel(/email/i).fill('alphax.codes@gmail.com');
-  await page.getByLabel(/password/i).fill('ShambaBora@2020');
-
-  /*
-  const usernameInput = page.getByLabel("Email");
-  const passwordInput = page.getByLabel("Password");
-  */
+  //  These e-mail and password need to be externilized so that we can do multiple user tests
+  await page.getByLabel(/email/i).fill("alphax.codes@gmail.com");
+  await page.getByLabel(/password/i).fill("ShambaBora@2020");
 
   // 5. Optional: Click the submit button if available
-  const loginButton = page.getByRole('button', { name: /sign in|login/i });
+  const loginButton = page.getByRole("button", { name: /sign in|login/i });
   if (await loginButton.isVisible()) {
     await loginButton.click();
   }
 
-  /*
-  await expect(usernameInput).toBeVisible();
-  await expect(passwordInput).toBeVisible();
+  //await expect(page).toHaveURL(/dashboard|home|account/i);
+  await expect(page).toHaveURL(/dashboard/i);
 
-  await usernameInput.fill("alphax.codes@gmail.com");
-  await passwordInput.fill("ShambaBora@2020");
+  await expect(page).toHaveTitle(/Shamba Bora/);
+  await expect(page.getByRole("heading", { name: /dashboard/i })).toBeVisible();
 
-  const loginButton2 = page.getByRole("button");
-  await loginButton2.click();
-  */
+  //  Assert the Farmer Statistics graph chart
+  await expect(page.getByText(/Farmer Statistics/i)).toBeVisible();
+
+  //  Assert the Panel Recent Farmers
+  await expect(page.getByText(/Recent Farmers/i)).toBeVisible();
+  await expect(
+    page.getByText(/You made 45 registrations this month./i)
+  ).toBeVisible();
 });
