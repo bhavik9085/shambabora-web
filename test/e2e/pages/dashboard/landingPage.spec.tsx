@@ -1,0 +1,38 @@
+import { test, expect } from "@playwright/test";
+
+test("Navigation on the Manage Amcos menu", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.locator("text=Login")).toBeVisible();
+
+  //  Need to double click here to get the new page
+  await page.getByRole("link", { name: /login/i }).click();
+  await page.getByRole("link", { name: /login/i }).click();
+
+  await expect(page).toHaveURL(/.*\/sign-in.*/);
+  await expect(page).toHaveURL(/.*\/sign-in.*/);
+
+  //  These e-mail and password need to be externilized so that we can do multiple user tests
+  await page.getByLabel(/email/i).fill("alphax.codes@gmail.com");
+  await page.getByLabel(/password/i).fill("ShambaBora@2020");
+
+  // 5. Optional: Click the submit button if available
+  const loginButton = page.getByRole("button", { name: /sign in|login/i });
+  if (await loginButton.isVisible()) {
+    await loginButton.click();
+  }
+
+  await expect(page).toHaveURL(/dashboard/i);
+
+  await expect(page).toHaveTitle(/Shamba Bora/);
+
+  await page.getByRole("button", { name: /Manage Amcos/i }).click();
+  await page.getByRole("link", { name: /Mcu/i }).click();
+
+  await expect(page).toHaveURL("/dashboard/mcus");
+
+  await page.getByText(/loading/i).waitFor({ state: "detached" });
+
+  await expect(page.getByRole("heading", { name: "Mcu" })).toBeVisible();
+  await expect(page.getByText(/Here's a list of your MCUs/i)).toBeVisible();
+});
