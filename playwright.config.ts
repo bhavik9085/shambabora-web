@@ -17,6 +17,14 @@ export default defineConfig({
     headless: true,
     browserName: "chromium", // Default browser
   },
+  /*
+  webServer : {
+    command: 'npm run dev',
+    port: 5173,
+    timeout: 120 * 1000,
+    reuseExistingServer: !process.env.CI,
+  },
+  */
 
   projects: [
     /*

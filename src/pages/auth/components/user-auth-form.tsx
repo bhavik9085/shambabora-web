@@ -132,7 +132,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
-            <Button className='mt-2' loading={isPending}>
+            <Button role='loginButton' className='mt-2' loading={isPending}>
               Login
             </Button>
 
