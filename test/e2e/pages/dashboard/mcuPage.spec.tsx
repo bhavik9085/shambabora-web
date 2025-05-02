@@ -31,7 +31,7 @@ test("Navigation on the Manage Amcos menu", async ({ page }) => {
 
   await expect(page).toHaveURL("/dashboard/mcus");
 
-  await page.getByText(/loading/i).waitFor({ state: "detached" });
+  await page.getByText(/loading ...../i).waitFor({ state: "detached" });
 
   await expect(page.getByRole("heading", { name: "Mcu" })).toBeVisible();
   await expect(page.getByText(/Here's a list of your MCUs/i)).toBeVisible();

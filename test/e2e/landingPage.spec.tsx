@@ -33,7 +33,9 @@ test("sign page when login is clicked", async ({ page }) => {
 
   //  Assert the Panel Recent Farmers
   await expect(page.getByText(/Recent Farmers/i)).toBeVisible();
+
   await expect(
-    page.getByText(/You made 45 registrations this month./i)
+    page.getByText(/You made 52 registrations this month./i)
   ).toBeVisible();
+
 });
