@@ -1,2 +1,3 @@
-export const DataBaseUrl = "https://api.shambabora.co.tz/api/v1";
+export const DataBaseUrl = "https://shambabora-api-bd4cd479984e.herokuapp.com";
+//export const DataBaseUrl = "http://localhost:3030";
 

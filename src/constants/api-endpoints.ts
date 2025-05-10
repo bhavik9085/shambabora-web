@@ -1,6 +1,7 @@
 import { DataBaseUrl } from "./base-url";
 // AUTH
-export const POST_LOGIN_USER = `${DataBaseUrl}/auth/login`;
+// export const POST_LOGIN_USER = `${DataBaseUrl}/auth/login`;
+export const POST_LOGIN_USER = `${DataBaseUrl}/authentication`;
 export const POST_REGISTER_USER = `${DataBaseUrl}/auth/register`;
 export const REFRESH_TOKEN = `${DataBaseUrl}/auth/register`;
 export const Dashboard = `${DataBaseUrl}/dashboard-stats`;
