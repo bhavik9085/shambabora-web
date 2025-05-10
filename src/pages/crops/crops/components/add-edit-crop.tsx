@@ -71,17 +71,17 @@ const AddEditCrop = ({ mode, initialData, handleCancel }: AddEditCropProps) => {
     queryKey: ['units'],
     queryFn: async () => {
       const response: any = await getMeasurementUnit()
-      console.log(response)
-      return response
-    },
+      console.log("measurement-units",response)
+      return response.data   
+     },
   })
 
   const { data: cropTypes, isLoading: loadCTypes } = useQuery({
     queryKey: ['cropTypes'],
     queryFn: async () => {
       const response: any = await getCropTypes()
-      console.log(response)
-      return response
+      console.log("crop-types", response)
+      return response.data
     },
   })
 
