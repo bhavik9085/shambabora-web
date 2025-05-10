@@ -53,13 +53,13 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
     const {mutate: signInMutation, isPending} = useMutation({
         mutationFn: async (data: z.infer<typeof formSchema>) => {
             const respose = await postLogin(data)
-            console.log(respose)
+            // console.log(respose)
             return respose
         },
         onSuccess: async (data: any) => {
             console.log('--------')
-            console.log(util.inspect(data, {depth: null, colors: true}));
-            console.log('--------')
+            // console.log(JSON.stringify(data, null, 2));
+
             dispatch(
               addAlert({
                   message: 'User registration successfully',
