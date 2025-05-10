@@ -42,7 +42,7 @@ export default function Region() {
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
          {
-          isLoading ? <div>Loading .....</div>:  <DataTable data={mUnits.data} columns={columns} />
+          isLoading ? <div>Loading .....</div>:  <DataTable data={mUnits.data ?? []} columns={columns} />
          }
         </div>
       </Layout.Body>

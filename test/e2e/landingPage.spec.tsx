@@ -13,8 +13,8 @@ test("sign page when login is clicked", async ({ page }) => {
   await expect(page).toHaveURL(/.*\/sign-in.*/);
 
   //  These e-mail and password need to be externilized so that we can do multiple user tests
-  await page.getByLabel(/email/i).fill("alphax.codes@gmail.com");
-  await page.getByLabel(/password/i).fill("ShambaBora@2020");
+  await page.getByLabel(/email/i).fill("Kenny27@yahoo.com");
+  await page.getByLabel(/password/i).fill("shambabora");
 
   // 5. Optional: Click the submit button if available
   const loginButton = page.getByRole("button", { name: /sign in|login/i });
