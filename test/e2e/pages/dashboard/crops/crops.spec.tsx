@@ -127,9 +127,9 @@ test("Create → Edit → Delete a Crop", async ({ page }) => {
         const kebab = row.locator('button[aria-haspopup="menu"]');
         await kebab.click();
 
-        await page.getByRole("menuitem", { name: /delete/i }).click();
+        await page.getByRole("menuitem", { name: /Delete/i }).click();
 
-        const confirmButton = page.getByRole("button", { name: /confirm|delete/i });
+        const confirmButton = page.getByRole("button", { name: /Delete/i });
         await confirmButton.click();
 
         await expect(page.locator("tbody tr", { hasText: updatedName })).toHaveCount(0);
