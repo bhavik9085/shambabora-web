@@ -1,13 +1,13 @@
-import * as React from 'react'
+import * as React from "react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { useAppDispatch } from '@/hooks/store-hooks'
-import { zodResolver } from '@hookform/resolvers/zod'
+} from "@/components/ui/dialog";
+import { useAppDispatch } from "@/hooks/store-hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -15,15 +15,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/custom/button'
-import { getRDistrict, getRegions, postLocationWards, updateWards } from '@/helpers/api-helper'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { addAlert } from '@/store/slices/elert-slice' 
-import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select'
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/custom/button";
+import {
+  getRDistrict,
+  getRegions,
+  postLocationWards,
+  updateWards,
+} from "@/helpers/api-helper";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addAlert } from "@/store/slices/elert-slice";
+import {
+  Select,
+  SelectItem,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // // Sample district data, replace with your actual district data
 // const allDistricts = [
@@ -35,118 +46,126 @@ import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@
 // ];
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: 'Please enter Ward name' }),
-  region: z.string().min(1, { message: 'Please select region' }).transform(Number),
-  district: z.string().min(1, { message: 'Please select district' }).transform(Number),
-})
+  name: z.string().min(1, { message: "Please enter Ward name" }),
+  region: z.string().min(1, { message: "Please select region" }),
+  district: z.string().min(1, { message: "Please select district" }),
+});
 
-type FormSchema = z.infer<typeof formSchema>
+type FormSchema = z.infer<typeof formSchema>;
 
 interface AddEditWardProps {
-  mode: 'add' | 'edit'
-  initialData?: { name: string; id: number; district: any } | null
-  handleCancel: () => void
+  mode: "add" | "edit";
+  initialData?: { name: string; id: number; district: any } | null;
+  handleCancel: () => void;
 }
 
-const AddEditWard = ({
-  mode,
-  initialData,
-  handleCancel,
-}: AddEditWardProps) => {
-  const dispatch = useAppDispatch()
-  const queryClient = useQueryClient()
+const AddEditWard = ({ mode, initialData, handleCancel }: AddEditWardProps) => {
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: initialData?.name || '',
+      name: initialData?.name || "",
       // region: initialData?.region?.toString() || '',
-      district: initialData?.district?.toString() || '',
+      district: initialData?.district?.toString() || "",
     },
-  })
+  });
 
   const { data: districts } = useQuery({
     queryKey: ["district"],
     queryFn: async () => {
-      const response:any = await getRDistrict();
-      console.log(response);
-      return response;
+      const response: any = await getRDistrict();
+      return response?.data;
     },
   });
 
   const { data: regions, isLoading: isRegionsLoading } = useQuery({
-    queryKey: ['regions'],
-    queryFn:async () => {
-      const response:any = await getRegions();
-      return response;
+    queryKey: ["regions"],
+    queryFn: async () => {
+      const response: any = await getRegions();
+      return response?.data;
     },
-  })
+  });
 
-  const [selectedRegion, setSelectedRegion] = React.useState<number | null>(null);
+  const [selectedRegion, setSelectedRegion] = React.useState<number | null>(
+    null
+  );
 
   const filteredDistricts = selectedRegion
-    ? districts.filter((district:any) => district.region === selectedRegion)
+    ? districts?.filter((district: any) => district.region === selectedRegion)
     : [];
 
   const mutation = useMutation({
     mutationFn: async (data: FormSchema) => {
-      if (mode === 'edit' && initialData?.id) {
+      if (mode === "edit" && initialData?.id) {
         return await updateWards(initialData.id, {
           name: data.name,
-          district: data.district
-      })
+          district: data.district,
+        });
       } else {
-        return await postLocationWards(data)
+        return await postLocationWards({
+          name: data.name,
+          district: data.district,
+        });
+        // return await postLocationWards(data)
       }
     },
     onSuccess: () => {
       dispatch(
         addAlert({
-          message: mode === 'edit' ? 'Ward updated successfully!' : 'Ward added successfully!',
-          title: mode === 'edit' ? 'Edit Success' : 'Add Success',
-          type: 'success',
+          message:
+            mode === "edit"
+              ? "Ward updated successfully!"
+              : "Ward added successfully!",
+          title: mode === "edit" ? "Edit Success" : "Add Success",
+          type: "success",
         })
-      )
-      queryClient.invalidateQueries({ queryKey: ['wards'] });
-      handleCancel()
+      );
+      queryClient.invalidateQueries({ queryKey: ["wards"] });
+      handleCancel();
     },
     onError: (error: any) => {
       dispatch(
         addAlert({
-          message: error.message || 'Something went wrong!',
-          title: mode === 'edit' ? 'Edit Failed' : 'Add Failed',
-          type: 'error',
+          message: error.message || "Something went wrong!",
+          title: mode === "edit" ? "Edit Failed" : "Add Failed",
+          type: "error",
         })
-      )
+      );
     },
-  })
+  });
 
   function onSubmit(data: FormSchema) {
-    mutation.mutate(data)
+    mutation.mutate(data);
   }
 
   return (
     <Dialog open={true} onOpenChange={handleCancel}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{mode === 'edit' ? 'Edit Ward' : 'Add Ward'}</DialogTitle>
+          <DialogTitle>
+            {mode === "edit" ? "Edit Ward" : "Add Ward"}
+          </DialogTitle>
           <DialogDescription>
-            {mode === 'edit' ? 'Update the Ward details.' : 'Enter the Ward details.'}
+            {mode === "edit"
+              ? "Update the Ward details."
+              : "Enter the Ward details."}
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className='grid gap-4'>
+            <div className="grid gap-4">
               {/* Ward Name Field */}
               <FormField
                 control={form.control}
-                name='name'
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Ward Name</FormLabel>
                     <FormControl>
-                      <Input placeholder='Enter Ward name' {...field} />
+                      <Input placeholder="Enter Ward name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -156,7 +175,7 @@ const AddEditWard = ({
               {/* Region Select Field */}
               <FormField
                 control={form.control}
-                name='region'
+                name="region"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Region</FormLabel>
@@ -164,24 +183,27 @@ const AddEditWard = ({
                       <Select
                         value={field.value?.toLocaleString()}
                         onValueChange={(value: any) => {
-                          form.setValue('region', value)
-                          setSelectedRegion(Number(value));
+                          form.setValue("region", value);
+                          setSelectedRegion(value);
                         }}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder='Select a region' />
+                          <SelectValue placeholder="Select a region" />
                         </SelectTrigger>
                         <SelectContent>
                           {isRegionsLoading ? (
                             <div>Loading...</div>
                           ) : regions?.length > 0 ? (
                             regions?.map((reg: any) => (
-                              <SelectItem key={reg.id} value={reg.id.toString()}>
+                              <SelectItem
+                                key={reg.id}
+                                value={reg.id.toString()}
+                              >
                                 {reg.name}
                               </SelectItem>
                             ))
                           ) : (
-                            <SelectItem disabled value=''>
+                            <SelectItem disabled value="">
                               No regions found
                             </SelectItem>
                           )}
@@ -196,7 +218,7 @@ const AddEditWard = ({
               {/* District Select Field */}
               <FormField
                 control={form.control}
-                name='district'
+                name="district"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>District</FormLabel>
@@ -204,23 +226,24 @@ const AddEditWard = ({
                       <Select
                         value={field.value.toLocaleString()}
                         onValueChange={(value: any) => {
-                          form.setValue('district', value)
+                          form.setValue("district", value);
                         }}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder='Select a district' />
+                          <SelectValue placeholder="Select a district" />
                         </SelectTrigger>
                         <SelectContent>
                           {filteredDistricts.length > 0 ? (
-                            filteredDistricts.map((district:any) => (
-                              <SelectItem key={district.id} value={district.id.toString()}>
+                            filteredDistricts.map((district: any) => (
+                              <SelectItem
+                                key={district.id}
+                                value={district.id.toString()}
+                              >
                                 {district.name}
                               </SelectItem>
                             ))
                           ) : (
-                            <div>
-                              No districts found
-                            </div>
+                            <div>No districts found</div>
                           )}
                         </SelectContent>
                       </Select>
@@ -231,16 +254,20 @@ const AddEditWard = ({
               />
 
               {/* Action Buttons */}
-              <div className='flex justify-end space-x-2'>
+              <div className="flex justify-end space-x-2">
                 <Button
-                  type='submit'
-                  className='btn-primary'
+                  type="submit"
+                  className="btn-primary"
                   disabled={mutation.isPending}
                   loading={mutation.isPending}
                 >
-                  {mode === 'edit' ? 'Update Ward' : 'Create Ward'}
+                  {mode === "edit" ? "Update Ward" : "Create Ward"}
                 </Button>
-                <Button type='button' onClick={handleCancel} variant='secondary'>
+                <Button
+                  type="button"
+                  onClick={handleCancel}
+                  variant="secondary"
+                >
                   Cancel
                 </Button>
               </div>
@@ -249,7 +276,7 @@ const AddEditWard = ({
         </Form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default AddEditWard
+export default AddEditWard;
