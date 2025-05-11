@@ -12,7 +12,7 @@ import {
 import { schema } from '../data/schema'
 
 interface DataTableRowActionsProps<TData> {
-  row: Row<TData>
+  row: any
   onEdit: (rowData: any) => void
   onDelete: (rowData: any) => void
 }
@@ -36,8 +36,8 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
-      <DropdownMenuItem  onClick={() => onEdit(item)}>Edit</DropdownMenuItem>
-      <DropdownMenuItem onClick={() => onDelete(item)}>
+        <DropdownMenuItem onClick={() => onEdit(item)}>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => onDelete(item)}>
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
