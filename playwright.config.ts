@@ -10,21 +10,19 @@ export default defineConfig({
   retries: 1, // Retry failed tests once
   reporter: "html",
   use: {
-    baseURL: "http://localhost:5173",
+    baseURL: "http://localhost:5173", // test with the preview server 
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
     headless: true,
     browserName: "chromium", // Default browser
   },
-  /*
-  webServer : {
-    command: 'npm run dev',
-    port: 5173,
-    timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
-  },
-  */
+  // webServer: {
+  //   command: 'npm run build && npm run preview',
+  //   port: 5173,
+  //   timeout: 180 * 1000,
+  //   reuseExistingServer: !process.env.CI,
+  // },
 
   projects: [
     /*

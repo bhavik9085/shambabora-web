@@ -34,15 +34,15 @@ export default function Region() {
       <Layout.Body>
         <div className='mb-2 flex items-center justify-between space-y-2'>
           <div>
-            <h2 className='text-2xl font-bold tracking-tight'>Measumement units</h2>
+            <h2 className='text-2xl font-bold tracking-tight'>Measurement units</h2>
             <p className='text-muted-foreground'>
-              Here&apos;s a list of your Measumement units
+              Here&apos;s a list of your Measurement units
             </p>
           </div>
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
          {
-          isLoading ? <div>Loading .....</div>:  <DataTable data={mUnits} columns={columns} />
+          isLoading ? <div>Loading .....</div>:  <DataTable data={mUnits.data ?? []} columns={columns} />
          }
         </div>
       </Layout.Body>

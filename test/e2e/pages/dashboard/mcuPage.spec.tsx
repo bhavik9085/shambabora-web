@@ -16,7 +16,7 @@ test("Navigation on the Manage Amcos menu", async ({ page }) => {
   await page.getByLabel(/email/i).fill("alphax.codes@gmail.com");
   await page.getByLabel(/password/i).fill("ShambaBora@2020");
 
-  // 5. Optional: Click the submit button if available
+  // 6. Optional: Click the submit button if available
   const loginButton = page.getByRole("button", { name: /sign in|login/i });
   if (await loginButton.isVisible()) {
     await loginButton.click();

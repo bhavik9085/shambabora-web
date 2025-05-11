@@ -12,14 +12,14 @@ export default function Region() {
   const { data: cropTypes, isLoading } = useQuery({
     queryKey: ["cropTypes"],
     queryFn: async () => {
-      const response:any = await getCropTypes();
+      const response: any = await getCropTypes();
       console.log(response);
       return response;
     },
   });
 
   console.log(cropTypes);
-  
+
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -41,9 +41,9 @@ export default function Region() {
           </div>
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
-         {
-          isLoading ? <div>Loading .....</div>:  <DataTable data={cropTypes} columns={columns} />
-         }
+          {
+            isLoading ? <div>Loading .....</div> : <DataTable data={cropTypes.data ?? []} columns={columns} />
+          }
         </div>
       </Layout.Body>
     </Layout>

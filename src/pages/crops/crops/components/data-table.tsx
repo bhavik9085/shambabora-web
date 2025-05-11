@@ -30,6 +30,7 @@ import { DataTableColumnHeader } from './data-table-column-header'
 import { Checkbox } from '@radix-ui/react-checkbox'
 import { DataTableRowActions } from './data-table-row-actions'
 import DeleteDialog from './delete-crop'
+import { useEffect } from "react"
 //@ts-ignore
 interface DataTableProps<TData, TValue> {
   columns: any
@@ -216,7 +217,6 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
- 
   return (
     <div className='space-y-4'>
       <DataTableToolbar table={table} handleAdd={handleAdd}/>

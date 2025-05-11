@@ -14,9 +14,9 @@ export const WARDS = `${DataBaseUrl}/locations/wards/`;
 export const VILLAGES = `${DataBaseUrl}/locations/villages/`;
 
 //CROPS
-export const CROP_TYEPS = `${DataBaseUrl}/crop-types/`;
-export const CROPS = `${DataBaseUrl}/crops/`;
-export const MEASUREMENT_UNITS = `${DataBaseUrl}/measurement-units/`;
+export const CROP_TYEPS = `${DataBaseUrl}/crop-type/`;
+export const CROPS = `${DataBaseUrl}/crop/`;
+export const MEASUREMENT_UNITS = `${DataBaseUrl}/measurement-unit/`;
 
 //MCUS
 export const MCUS = `${DataBaseUrl}/mcus/`;

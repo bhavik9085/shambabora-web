@@ -78,6 +78,10 @@ class APIClient {
     return axios.put(url, data);
   };
 
+  patch = (url: string, data: any): Promise<AxiosResponse<any>> => {
+    return axios.patch(url, data);
+  };
+
   delete = (url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<any>> => {
     return axios.delete(url, config);
   };
