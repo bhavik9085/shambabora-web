@@ -8,14 +8,14 @@ import { useQuery } from '@tanstack/react-query'
 import { getRDistrict } from '@/helpers/api-helper'
 
 export default function District() {
-  const { data: districts, isLoading } = useQuery({
+  const { data: districts, isLoading: isLoadingDistricts } = useQuery({
     queryKey: ["district"],
     queryFn: async () => {
       const response:any = await getRDistrict();
-      console.log(response);
       return response;
     },
   });
+
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -32,13 +32,24 @@ export default function District() {
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Districts</h2>
             <p className='text-muted-foreground'>
-              Here&apos;s a list of your district
+              Here&apos;s a list of your districts
             </p>
           </div>
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
-        {
-          isLoading ? <div>Loading .....</div>:  <DataTable data={districts} columns={columns} />
+         {
+          isLoadingDistricts ? (
+            <div>Loading .....</div>
+          ) : (
+            districts?.data?.length > 0 ? (
+              <DataTable
+                data={districts.data}
+                columns={columns}
+              />
+            ) : (
+              <div>No results found.</div>
+            )
+          )
          }
         </div>
       </Layout.Body>
