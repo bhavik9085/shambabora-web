@@ -42,7 +42,18 @@ export default function Region() {
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
          {
-          isLoading ? <div>Loading .....</div>:  <DataTable data={regions} columns={columns} />
+          isLoading ? (
+            <div>Loading .....</div>
+          ) : (
+            regions?.data?.length > 0 ? (
+              <DataTable
+                data={regions.data} // No need to convert id
+                columns={columns}
+              />
+            ) : (
+              <div>No results found.</div>
+            )
+          )
          }
         </div>
       </Layout.Body>
