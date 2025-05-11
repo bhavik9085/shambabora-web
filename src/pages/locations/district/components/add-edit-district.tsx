@@ -21,19 +21,19 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/custom/button'
 import { getRegions, postLocationDistrict, updateDistrict } from '@/helpers/api-helper'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { addAlert } from '@/store/slices/elert-slice' 
+import { addAlert } from '@/store/slices/elert-slice'
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Please enter District name' }),
-  region: z.string().min(1, { message: 'Please select region' }).transform(Number),
+  region: z.string().min(1, { message: 'Please select region' }),
 })
 
 type FormSchema = z.infer<typeof formSchema>
 
 interface AddEditDistrictProps {
   mode: 'add' | 'edit'
-  initialData?: { name: string; id: number; region: any } | null
+  initialData?: { name: string; id: any; region: any } | null
   handleCancel: () => void
 }
 
@@ -53,22 +53,26 @@ const AddEditDistrict = ({
     },
   })
 
-  console.log(initialData);
-  
   const { data: regions, isLoading: isRegionsLoading } = useQuery({
     queryKey: ['regions'],
     queryFn: async () => {
       const response: any = await getRegions()
-      return response
+      return response.data || []
     },
   })
 
   const mutation = useMutation({
     mutationFn: async (data: FormSchema) => {
+      // Ensure we have a valid region value
+      const formData = {
+        ...data,
+        region: data.region || initialData?.region
+      }
+
       if (mode === 'edit' && initialData?.id) {
-        return await updateDistrict(initialData.id, data)
+        return await updateDistrict(initialData.id, formData)
       } else {
-        return await postLocationDistrict(data)
+        return await postLocationDistrict(formData)
       }
     },
     onSuccess: () => {
@@ -81,7 +85,6 @@ const AddEditDistrict = ({
       )
       queryClient.invalidateQueries({ queryKey: ['district'] });
       handleCancel()
-
     },
     onError: (error: any) => {
       dispatch(
@@ -135,7 +138,7 @@ const AddEditDistrict = ({
                     <FormLabel>Region</FormLabel>
                     <FormControl>
                       <Select
-                        value={field.value.toLocaleString()}
+                        value={field.value?.toString() || undefined}
                         onValueChange={(value:any) => {
                           form.setValue('region', value)
                         }}
@@ -145,9 +148,7 @@ const AddEditDistrict = ({
                         </SelectTrigger>
                         <SelectContent>
                           {isRegionsLoading ? (
-                            <div >
-                              Loading...
-                            </div>
+                            <div>Loading...</div>
                           ) : regions?.length > 0 ? (
                             regions.map((reg: any) => (
                               <SelectItem key={reg.id} value={reg.id.toString()}>
@@ -155,7 +156,7 @@ const AddEditDistrict = ({
                               </SelectItem>
                             ))
                           ) : (
-                            <SelectItem disabled value=''>
+                            <SelectItem value="no-regions" disabled>
                               No regions found
                             </SelectItem>
                           )}

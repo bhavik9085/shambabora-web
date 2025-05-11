@@ -12,7 +12,7 @@ import {
 import { schema } from '../data/schema'
 
 interface DataTableRowActionsProps<TData> {
-  row: Row<TData>
+  row: any
   onEdit: (rowData: any) => void
   onDelete: (rowData: any) => void
 }

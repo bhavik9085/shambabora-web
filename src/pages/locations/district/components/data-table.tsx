@@ -51,7 +51,7 @@ export function DataTable<TData, TValue>({
      // Modal states for Add/Edit
      const [showModal, setShowModal] = React.useState(false)
      const [mode, setMode] = React.useState<'add' | 'edit'>('add')
-     const [initialData, setInitialData] = React.useState<{ name: string, id:number, region:any  } | null>(
+     const [initialData, setInitialData] = React.useState<{ name: string, id:any, region:any } | null>(
        null
      )
   
@@ -62,7 +62,7 @@ export function DataTable<TData, TValue>({
       setShowModal(true)
     }
   
-    const handleEdit = (rowData: { name: string, id:number, region:any }) => {
+    const handleEdit = (rowData: { name: string, id:string, region:any }) => {
       setMode('edit')
       setInitialData(rowData) 
       setShowModal(true)

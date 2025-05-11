@@ -20,18 +20,54 @@ export const updateUser = (id: number, data: any) => api.put(url.USERS + id, dat
 //LOCATION
 export const postLocationRegion = (data: any) => api.create(url.REGIONS, data);
 export const getRegions = () => api.get(url.REGIONS);
-export const deleteRegion = (id: number, data: any) => api.delete(url.REGIONS + id, data);
-export const updateRegion = (id: number, data: any) => api.put(url.REGIONS + id, data);
+export const deleteRegion = (id:any, data:any) => api.delete(url.REGIONS + id, data);
+export const updateRegion = (id:any, data:any) => api.update(url.REGIONS + id, data);
 
-export const postLocationDistrict = (data: any) => api.create(url.DISTRICTS, data);
-export const getRDistrict = () => api.get(url.DISTRICTS);
-export const deleteDistrict = (id: number, data: any) => api.delete(url.DISTRICTS + id, data);
-export const updateDistrict = (id: number, data: any) => api.put(url.DISTRICTS + id, data);
+export const postLocationDistrict = (data:any) => api.create(url.DISTRICTS, data);
+export const getRDistrict = async () => {
+  const response = await api.get(url.DISTRICTS);
+  // Get regions data
+  const regionsResponse = await api.get(url.REGIONS);
+  
+  // Map district data with region names
+  const districtsWithRegions = response.data.map((district: any) => {
+    const region = regionsResponse.data.find((r: any) => r.id === district.region);
+    return {
+      ...district,
+      regionName: region?.name || 'Unknown Region'
+    };
+  });
 
-export const postLocationWards = (data: any) => api.create(url.WARDS, data);
-export const getRWards = () => api.get(url.WARDS);
-export const deleteWards = (id: number, data: any) => api.delete(url.WARDS + id, data);
-export const updateWards = (id: number, data: any) => api.put(url.WARDS + id, data);
+  return {
+    ...response,
+    data: districtsWithRegions
+  };
+};
+export const deleteDistrict = (id:number, data:any) => api.delete(url.DISTRICTS + id, data);
+export const updateDistrict = (id:number, data:any) => api.update(url.DISTRICTS + id, data);
+
+export const postLocationWards = (data:any) => api.create(url.WARDS, data);
+export const getRWards = async () => {
+  const response = await api.get(url.WARDS);
+  // Get districts data
+  const districtsResponse = await api.get(url.DISTRICTS);
+  
+  // Map ward data with district names
+  const wardsWithDistricts = response.data.map((ward: any) => {
+    const district = districtsResponse.data.find((d: any) => d.id === ward.district);
+    return {
+      ...ward,
+      districtName: district?.name || 'Unknown District'
+    };
+  });
+
+  return {
+    ...response,
+    data: wardsWithDistricts
+  };
+};
+export const deleteWards = (id:number, data:any) => api.delete(url.WARDS + id, data);
+export const updateWards = (id:number, data:any) => api.update(url.WARDS + id, data);
 
 export const postLocationVillages = (data: any) => api.create(url.VILLAGES, data);
 export const getRVillages = () => api.get(url.VILLAGES);

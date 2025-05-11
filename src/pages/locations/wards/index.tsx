@@ -8,11 +8,10 @@ import { useQuery } from '@tanstack/react-query'
 import { getRWards } from '@/helpers/api-helper'
 
 export default function Ward() {
-  const { data: wards, isLoading } = useQuery({
+  const { data: wards, isLoading: isLoadingWards } = useQuery({
     queryKey: ["wards"],
     queryFn: async () => {
       const response:any = await getRWards();
-      console.log(response);
       return response;
     },
   });
@@ -37,8 +36,19 @@ export default function Ward() {
           </div>
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
-        {
-          isLoading ? <div>Loading .....</div>:  <DataTable data={wards} columns={columns} />
+         {
+          isLoadingWards ? (
+            <div>Loading .....</div>
+          ) : (
+            wards?.data?.length > 0 ? (
+              <DataTable
+                data={wards.data}
+                columns={columns}
+              />
+            ) : (
+              <div>No results found.</div>
+            )
+          )
          }
         </div>
       </Layout.Body>
