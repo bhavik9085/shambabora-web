@@ -6,6 +6,10 @@ export const POST_REGISTER_USER = `${DataBaseUrl}/auth/register`;
 export const REFRESH_TOKEN = `${DataBaseUrl}/auth/register`;
 export const Dashboard = `${DataBaseUrl}/dashboard-stats`;
 
+//USERS
+
+export const USERS = `${DataBaseUrl}/users/`;
+
 
 //LOCATION
 export const REGIONS = `${DataBaseUrl}/region/`;
