@@ -8,10 +8,10 @@ export const Dashboard = `${DataBaseUrl}/dashboard-stats`;
 
 
 //LOCATION
-export const REGIONS = `${DataBaseUrl}/locations/regions/`;
-export const DISTRICTS = `${DataBaseUrl}/locations/districts/`;
-export const WARDS = `${DataBaseUrl}/locations/wards/`;
-export const VILLAGES = `${DataBaseUrl}/locations/villages/`;
+export const REGIONS = `${DataBaseUrl}/region/`;
+export const DISTRICTS = `${DataBaseUrl}/district/`;
+export const WARDS = `${DataBaseUrl}/ward/`;
+export const VILLAGES = `${DataBaseUrl}/village/`;
 
 //CROPS
 export const CROP_TYEPS = `${DataBaseUrl}/crop-types/`;

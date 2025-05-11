@@ -29,7 +29,7 @@ const formSchema = z.object({
 
 interface AddEditRegionProps {
   mode: 'add' | 'edit'
-  initialData?: { name: string; id: number } | null
+  initialData?: { name: string; id: string } | null
   handleCancel: () => void
 }
 
@@ -47,13 +47,21 @@ const AddEditRegion = ({
     },
   })  
 
+  // Function to generate random 12-digit postcode
+  function generateRandomPostcode() {
+    return Array.from({length: 12}, () => Math.floor(Math.random() * 10)).join('');
+  }
 
   const mutation = useMutation({
     mutationFn: async (data: z.infer<typeof formSchema>) => {
+      const requestData = {
+        ...data,
+        post_code: generateRandomPostcode()
+      };
       if (mode === 'edit' && initialData?.id) {
         return await updateRegion(initialData.id, data)
       } else {
-        return await postLocationRegion(data)
+        return await postLocationRegion(requestData)
       }
     },
     onSuccess: () => {
