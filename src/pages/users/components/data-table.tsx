@@ -25,23 +25,24 @@ import {
 
 import { DataTablePagination } from '../components/data-table-pagination'
 import { DataTableToolbar } from '../components/data-table-toolbar'
-import AddEditCropModal from './add-edit-center'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { Checkbox } from '@radix-ui/react-checkbox'
 import { DataTableRowActions } from './data-table-row-actions'
-import DeleteDialog from './delete-record'
+import DeleteDialog from './delete-user'
+import { useNavigate } from 'react-router-dom'
+import AddEditFarmer from './add-edit-user'
+import { DataSchema } from '../data/schema'
+
 //@ts-ignore
 interface DataTableProps<TData, TValue> {
   columns: any
   data: TData[]
 }
 
-type CheckedState = boolean | "indeterminate";
-
 export function DataTable<TData, TValue>({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<DataSchema, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
@@ -49,15 +50,12 @@ export function DataTable<TData, TValue>({
     []
   )
   const [sorting, setSorting] = React.useState<SortingState>([])
-
+  const navigate = useNavigate();
   // Modal states for Add/Edit
   const [showModal, setShowModal] = React.useState(false)
   const [showDeleteModal, setShowDeleteModal] = React.useState(false)
   const [mode, setMode] = React.useState<'add' | 'edit'>('add')
-  const [initialData, setInitialData] = React.useState<{
-    id: number, name: string, type: string, uom: number,
-    packaging: string
-  } | null>(
+  const [initialData, setInitialData] = React.useState<{ id: number, name: string } | null>(
     null
   )
 
@@ -68,7 +66,7 @@ export function DataTable<TData, TValue>({
     setShowModal(true)
   }
 
-  const handleEdit = (rowData: { name: string, id: number, type: string, uom: number, packaging: string }) => {
+  const handleEdit = (rowData: { name: string, id: number }) => {
     setMode('edit')
     setInitialData(rowData)
     setShowModal(true)
@@ -80,20 +78,24 @@ export function DataTable<TData, TValue>({
   }
 
 
-  const handleDelete = (rowData: { name: string, id: number, type: string, uom: number, packaging: string }) => {
+  const handleDelete = (rowData: { name: string, id: number }) => {
     setInitialData(rowData)
     setShowDeleteModal(true)
   }
 
 
-  const getColumns = React.useCallback((): ColumnDef<TData>[] => [
+
+  const getColumns = React.useCallback((): ColumnDef<DataSchema>[] => [
     {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
           checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate') as CheckedState
+            table.getIsAllPageRowsSelected()
+              ? true
+              : table.getIsSomePageRowsSelected()
+                ? 'indeterminate'
+                : false
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label='Select all'
@@ -121,66 +123,49 @@ export function DataTable<TData, TValue>({
       enableHiding: false,
     },
     {
-      accessorKey: 'name',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title='Name' />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className='flex space-x-2'>
-            <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
-              {row.getValue('name')}
-            </span>
-          </div>
-        )
-      },
+      accessorFn: row => `${row?.firstName}  ${row?.lastName ?? ''}`,
+      id: 'fullName',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+      cell: ({ row }) => <span>{row.getValue('fullName')}</span>,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'email',
+      header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+      cell: ({ row }) => <span>{row.getValue('email')}</span>,
       enableSorting: true,
       enableHiding: false,
     },
     {
-      accessorKey: 'amcos',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title='Amcos Name' />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className='flex space-x-2'>
-            <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
-              {row.getValue('amcos')}
-            </span>
-          </div>
-        )
-      },
+      accessorKey: 'isActive',
+      header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
+      cell: ({ row }) => <span>{row.getValue('isActive') ? 'Active' : 'Inactive'}</span>,
       enableSorting: true,
       enableHiding: false,
     },
     {
-      accessorKey: 'village',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title='Village Name' />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className='flex space-x-2'>
-            <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
-              {row.getValue('village')}
-            </span>
-          </div>
-        )
-      },
+      accessorKey: 'role',
+      header: ({ column }) => <DataTableColumnHeader column={column} title='Role' />,
+      cell: ({ row }) => <span>{row.getValue('role')}</span>,
       enableSorting: true,
       enableHiding: false,
     },
-
+    {
+      accessorKey: 'createdAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title='Created At' />,
+      cell: ({ row }) => <span>{row.getValue('createdAt')}</span>,
+      enableSorting: true,
+      enableHiding: false,
+    },
     {
       id: 'actions',
       cell: ({ row }) => (
         <DataTableRowActions row={row} onEdit={handleEdit} onDelete={handleDelete} />
       ),
-    },
-  ], [handleEdit, handleDelete])
-
-
+    }
+  ],
+    [handleEdit, handleDelete]
+  );
   const table = useReactTable({
     data,
     columns: getColumns(),
@@ -260,8 +245,9 @@ export function DataTable<TData, TValue>({
       </div>
       <DataTablePagination table={table} />
       {showModal && (
-        <AddEditCropModal
+        <AddEditFarmer
           mode={mode}
+          //@ts-ignore
           initialData={initialData}
           handleCancel={handleCancel}
         />

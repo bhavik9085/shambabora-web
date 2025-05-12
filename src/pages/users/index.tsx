@@ -1,24 +1,25 @@
+
 import { Layout } from '@/components/custom/layout'
 import { Search } from '@/components/search'
 import ThemeSwitch from '@/components/theme-switch'
 import { UserNav } from '@/components/user-nav'
 import { DataTable } from './components/data-table'
 import { columns } from './components/columns'
-// import { regions } from './data/data'
 import { useQuery } from '@tanstack/react-query'
-import { getCollectionCenters } from '@/helpers/api-helper'
+import { snakeToCamelCase } from '@/lib/utils'
+import { getUsers } from '@/helpers/api-helper'
 
-export default function Region() {
-  const { data: collectionCenters, isLoading } = useQuery({
-    queryKey: ["collectionCenters"],
+export default function Users() {
+  const { data: users, isLoading } = useQuery({
+    queryKey: ["farmers"],
     queryFn: async () => {
-      const response: any = await getCollectionCenters();
+      const response: any = await getUsers();
       console.log(response);
-      return response;
+      return snakeToCamelCase(response);
     },
   });
 
-  console.log(collectionCenters);
+  console.log(users);
 
   return (
     <Layout>
@@ -34,15 +35,15 @@ export default function Region() {
       <Layout.Body>
         <div className='mb-2 flex items-center justify-between space-y-2'>
           <div>
-            <h2 className='text-2xl font-bold tracking-tight'>Collection Centers </h2>
+            <h2 className='text-2xl font-bold tracking-tight'>Users List</h2>
             <p className='text-muted-foreground'>
-              Here&apos;s a list of your collection centers
+              Here&apos;s a list of all Users
             </p>
           </div>
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
           {
-            isLoading ? <div>Loading .....</div> : <DataTable data={collectionCenters?.data ?? []} columns={columns} />
+            isLoading ? <div>Loading .....</div> : <DataTable data={users.data ?? []} columns={columns} />
           }
         </div>
       </Layout.Body>
