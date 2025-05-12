@@ -11,15 +11,15 @@ export const getDashboard = () => api.get(url.Dashboard);
 //LOCATION
 export const postLocationRegion = (data:any) => api.create(url.REGIONS, data);
 export const getRegions = () => api.get(url.REGIONS);
-export const deleteRegion = (id:any, data:any) => api.delete(url.REGIONS + id, data);
-export const updateRegion = (id:any, data:any) => api.update(url.REGIONS + id, data);
+export const deleteRegion = (id: any, data: any) => api.delete(url.REGIONS + id, data);
+export const updateRegion = (id: any, data: any) => api.update(url.REGIONS + id, data);
 
-export const postLocationDistrict = (data:any) => api.create(url.DISTRICTS, data);
+export const postLocationDistrict = (data: any) => api.create(url.DISTRICTS, data);
 export const getRDistrict = async () => {
   const response = await api.get(url.DISTRICTS);
   // Get regions data
   const regionsResponse = await api.get(url.REGIONS);
-  
+
   // Map district data with region names
   const districtsWithRegions = response.data.map((district: any) => {
     const region = regionsResponse.data.find((r: any) => r.id === district.region);
@@ -34,15 +34,15 @@ export const getRDistrict = async () => {
     data: districtsWithRegions
   };
 };
-export const deleteDistrict = (id:number, data:any) => api.delete(url.DISTRICTS + id, data);
-export const updateDistrict = (id:number, data:any) => api.update(url.DISTRICTS + id, data);
+export const deleteDistrict = (id: number, data: any) => api.delete(url.DISTRICTS + id, data);
+export const updateDistrict = (id: number, data: any) => api.update(url.DISTRICTS + id, data);
 
-export const postLocationWards = (data:any) => api.create(url.WARDS, data);
+export const postLocationWards = (data: any) => api.create(url.WARDS, data);
 export const getRWards = async () => {
   const response = await api.get(url.WARDS);
   // Get districts data
   const districtsResponse = await api.get(url.DISTRICTS);
-  
+
   // Map ward data with district names
   const wardsWithDistricts = response.data.map((ward: any) => {
     const district = districtsResponse.data.find((d: any) => d.id === ward.district);
@@ -57,8 +57,8 @@ export const getRWards = async () => {
     data: wardsWithDistricts
   };
 };
-export const deleteWards = (id:number, data:any) => api.delete(url.WARDS + id, data);
-export const updateWards = (id:number, data:any) => api.update(url.WARDS + id, data);
+export const deleteWards = (id: number, data: any) => api.delete(url.WARDS + id, data);
+export const updateWards = (id: number, data: any) => api.update(url.WARDS + id, data);
 
 export const postLocationVillages = (data:any) => api.create(url.VILLAGES, data);
 export const getRVillages = () => api.get(url.VILLAGES);
@@ -85,8 +85,8 @@ export const updateMeasurementUnit = (id:number, data:any) => api.put(url.MEASUR
 //MCUS
 export const postMCU = (data:any) => api.create(url.MCUS, data);
 export const getMCUs = () => api.get(url.MCUS);
-export const deleteMCU = (id:number, data:any) => api.delete(url.MCUS + id, data);
-export const updateMCU = (id:number, data:any) => api.put(url.MCUS + id, data);
+export const deleteMCU = (id: number, data: any) => api.delete(url.MCUS + id, data);
+export const updateMCU = (id: number, data: any) => api.patch(url.MCUS + id, data);
 
 export const postAMCOS = (data:any) => api.create(url.AMCOS, data);
 export const getAMCOSs = () => api.get(url.AMCOS);
@@ -95,8 +95,8 @@ export const updateAMCOS = (id:number, data:any) => api.put(url.AMCOS + id, data
 
 export const postCollectionCenter = (data:any) => api.create(url.COLLECTION_CENTEER, data);
 export const getCollectionCenters = () => api.get(url.COLLECTION_CENTEER);
-export const deleteCollectionCenter = (id:number, data:any) => api.delete(url.COLLECTION_CENTEER + id, data);
-export const updateCollectionCenter = (id:number, data:any) => api.put(url.COLLECTION_CENTEER + id, data);
+export const deleteCollectionCenter = (id: number, data: any) => api.delete(url.COLLECTION_CENTEER + id, data);
+export const updateCollectionCenter = (id: number, data: any) => api.patch(url.COLLECTION_CENTEER + id, data);
 
 
 //FARMERS
@@ -105,11 +105,11 @@ export const postFarms = (data:any) => api.create(url.FARMS, data);
 
 //  The search is not complete and can not filter the result
 export const getFarmers = () => api.get(url.FARMERS);
-export const getFarmerHarvests = (id:any) => api.get(url.FARMERS_HARVERSTS + id);
-export const deleteFarmer = (id:number, data:any) => api.delete(url.FARMERS + id, data);
-export const updateFarmer = (id:number, data:any) => api.put(url.FARMERS + id, data);
-export const retrieveFarmer = (id:string) => api.get(url.FARMERS + id);
-export const retrieveFarmerFarms = (id:string) => api.get(url.FARMERS + id);
+export const getFarmerHarvests = (id: any) => api.get(url.FARMERS_HARVERSTS + id);
+export const deleteFarmer = (id: number, data: any) => api.delete(url.FARMERS + id, data);
+export const updateFarmer = (id: number, data: any) => api.patch(url.FARMERS + id, data);
+export const retrieveFarmer = (id: string) => api.get(url.FARMERS + id);
+export const retrieveFarmerFarms = (id: string) => api.get(url.FARMERS + id);
 
 export const getAllFarmersHarvests = () => api.get(url.FARMERS_HARVERSTS);
 export const postFarmerHarvests = (data:any) => api.create(url.FARMERS_HARVERSTS, data);
