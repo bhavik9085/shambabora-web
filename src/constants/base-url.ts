@@ -1,2 +1,2 @@
-export const DataBaseUrl = process.env.SHAMBABORA_API_URL || "http://localhost:3030";
+export const DataBaseUrl = import.meta.env.VITE_SHAMBABORA_API_URL || "http://localhost:3030";
 
