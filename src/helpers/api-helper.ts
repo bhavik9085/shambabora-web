@@ -97,8 +97,8 @@ export const updateMCU = (id: number, data: any) => api.patch(url.MCUS + id, dat
 
 export const postAMCOS = (data: any) => api.create(url.AMCOS, data);
 export const getAMCOSs = () => api.get(url.AMCOS);
-export const deleteAMCOS = (id: number, data: any) => api.delete(url.AMCOS + id, data);
-export const updateAMCOS = (id: number, data: any) => api.put(url.AMCOS + id, data);
+export const deleteAMCOS = (id: string, data: any) => api.delete(url.AMCOS + id, data);
+export const updateAMCOS = (id: string, data: any) => api.patch(url.AMCOS + id, data);
 
 export const postCollectionCenter = (data: any) => api.create(url.COLLECTION_CENTEER, data);
 export const getCollectionCenters = () => api.get(url.COLLECTION_CENTEER);
